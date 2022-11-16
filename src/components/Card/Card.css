@@ -1,0 +1,11 @@
+.card {
+  display: flex;
+  max-width: 200px;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid black;
+}
+.card__wrap {
+  display: flex;
+  flex-direction: row;
+}
