@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import Card from "./components/Card/Card";
 import { database } from "./firebase";
+import { storage } from "./firebase";
 import {
   query,
   collection,
@@ -11,24 +12,68 @@ import {
   addDoc,
   deleteDoc,
 } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+const dayjs = require("dayjs");
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [titleInput, setTitleInput] = useState("");
   const [textInput, setTextInput] = useState("");
-  const [dateInput, setDateInput] = useState();
+  const [dateInput, setDateInput] = useState("");
+  const [formatedDate, setFormatedDate] = useState("");
+  const [fileUrl, setFileUrl] = useState("");
+  const [progress, setProgress] = useState(0);
+
+  const handlerDataChange = (date) => {
+    setDateInput(date);
+    const formatedDate = dayjs(date).format("D.MMM.YY HH:mm");
+    setFormatedDate(formatedDate);
+  };
+  const formFileHandler = (e) => {
+    e.preventDefault();
+    const file = e.target[0].files[0];
+    uploadFiles(file);
+  };
+  const uploadFiles = (file) => {
+    if (!file) {
+      setFileUrl("");
+      return;
+    }
+    const storageRef = ref(storage, `/files/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const prog = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProgress(prog);
+      },
+      (error) => console.log(error),
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log("File available at", downloadURL);
+          setFileUrl(downloadURL);
+        });
+      }
+    );
+  };
   //Create
   const createCard = async (e) => {
     e.preventDefault();
     if (textInput === "") {
-      alert("Вставьте необходимое значение");
+      alert("Вставьте все необходимые значения");
       return;
     }
     await addDoc(collection(database, "todos"), {
       description: textInput,
       title: titleInput,
       done: false,
-      date: dateInput,
+      date: formatedDate,
+      fileUrl: fileUrl,
     });
   };
   //Read
@@ -71,15 +116,20 @@ function App() {
           onChange={(e) => setTextInput(e.target.value)}
           placeholder="Описание задачи"
         ></textarea>
-        <input type="file" />
-        <input
-          type="date"
-          value={dateInput}
-          onChange={(e) => setDateInput(e.target.value)}
+        <DatePicker
+          selected={dateInput}
+          onChange={handlerDataChange}
+          showTimeSelect
+          timeFormat="HH:mm"
+          dateFormat="dd.MMM.yy, hh:mm"
+          placeholderText="Click to select a date"
         />
-        <button type="submit" value="Submit">
-          Create
-        </button>
+        <button type="submit">Create</button>
+      </form>
+      <form onSubmit={formFileHandler}>
+        <input type="file" className="input" onChange={() => setProgress(0)} />
+        <button type="submit">Загрузить файл</button>
+        {progress > 0 && <p>Uploading done {progress}%</p>}
       </form>
       <main>
         <ul className="list">
