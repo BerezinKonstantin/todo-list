@@ -15,7 +15,6 @@ import {
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
 const dayjs = require("dayjs");
 
 function App() {
@@ -26,17 +25,29 @@ function App() {
   const [formatedDate, setFormatedDate] = useState("");
   const [fileUrl, setFileUrl] = useState("");
   const [progress, setProgress] = useState(0);
-  //Обработчики данных создаваемой карточки
+  /**
+   * Обработчик даты. Принимает выбраную дату и форматирует ее к установленному виду
+   * @param {timestamp} date дата в любом формате
+   */
   const handlerDateChange = (date) => {
     setDateInput(date);
     const formatedDate = dayjs(date).format("D.MMM.YY HH:mm");
     setFormatedDate(formatedDate);
   };
+  /**
+   * Обработчик загрузки файла. При отправке формы находит файл и вызывает функцию его загрузки
+   * @param {*} e событие отправки формы
+   */
   const formFileHandler = (e) => {
     e.preventDefault();
     const file = e.target[0].files[0];
     uploadFiles(file);
   };
+  /**
+   * Функция загрузки переданного файла в хранилище firestore
+   * @param {*} file загружаемый файл
+   * @returns прекращает работу функции, если файл отсутствует
+   */
   const uploadFiles = (file) => {
     if (!file) {
       setFileUrl("");
@@ -60,7 +71,11 @@ function App() {
       }
     );
   };
-  //Create
+  /**
+   * Функция добавления карточки в базу данных firebase. Создает карточку с переданными в форме данными
+   * @param {*} e событие отправки формы
+   * @returns прекращает работу функции, если не заполнены все необходимые
+   */
   const createCard = async (e) => {
     e.preventDefault();
     if (textInput === "") {
@@ -75,7 +90,9 @@ function App() {
       fileUrl: fileUrl,
     });
   };
-  //Read
+  /**
+   * Функция получения массива карточек из базы данных firebase. Создает карточку с переданными в форме данными.
+   */
   useEffect(() => {
     const q = query(collection(database, "todos"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -87,13 +104,19 @@ function App() {
     });
     return () => unsubscribe();
   }, []);
-  //Update
+  /**
+   * Функция редактирования карточки. Изменяет статус заавершенности карточки на противоположный
+   * @param {object} card обьект карточки
+   */
   const toggleCardDone = async (card) => {
     await updateDoc(doc(database, "todos", card.id), {
       done: !card.done,
     });
   };
-  //Delete
+  /**
+   * Функция удаления карточки по переданному идентификатору
+   * @param {string} id идентификатор карточки
+   */
   const deleteCard = async (id) => {
     await deleteDoc(doc(database, "todos", id));
   };

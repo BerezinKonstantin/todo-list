@@ -13,23 +13,41 @@ const Card = ({ card, toggleCardDone, deleteCard }) => {
 
   const now = dayjs();
   const isLate = dayjs(card.date).isBefore(now);
+  /**
+   * Функция переводит статус карточки в редактируемую и устанавливает начальные значения инпутов
+   */
   const handleEditCard = () => {
     setIsCardEdit(true);
     setEditedTitleInput(card.title);
     setEditedTextInput(card.description);
   };
-  //Обработчики данных редактируемой карточки
+  /**
+   * Обработчик значения поля ввода заголовка карточки
+   * @param {*} e событие изменения поля ввода
+   */
   const handlerEditedTitleInput = (e) => {
     setEditedTitleInput(e.target.value);
   };
+  /**
+   * Обработчик значения поля ввода описания карточки
+   * @param {*} e событие изменения поля ввода
+   */
   const handlerEditedTextInput = (e) => {
     setEditedTextInput(e.target.value);
   };
+  /**
+   * Обработчик даты. Принимает выбраную дату и форматирует ее к установленному виду
+   * @param {timestamp} date дата в любом формате
+   */
   const handlerEditedCardDate = (date) => {
     setEditedDateInput(date);
     const formatedEditDate = dayjs(date).format("D.MMM.YY HH:mm");
     setEditedFormatedDate(formatedEditDate);
   };
+  /**
+   * Функция редактирование карточки. Обновляет карточку в базе данных с новыми переданными значениями
+   * @param {*} e событие отправки формы
+   */
   const handlerEditCard = async (e) => {
     e.preventDefault();
     await updateDoc(doc(database, "todos", card.id), {
