@@ -41,29 +41,19 @@ const Card = ({ card, toggleCardDone, deleteCard }) => {
   return (
     <>
       {(!isCardEdit && (
-        <li className="card">
-          <h2 className={"card__title" + (isLate ? " card__title_late" : "")}>
-            {card.title}
-          </h2>
-          <p className="card__text">Text here: {card.description}</p>
-          <div className="card__wrap">
+        <li className={"card" + (card.done ? " done" : isLate ? " late" : "")}>
+          <h2>{card.title}</h2>
+          <p>{card.description}</p>
+          <div className="row_div">
             <input
               type="checkbox"
               checked={card.done}
               onChange={() => toggleCardDone(card)}
             />
-            <div
-              className="card__date"
-              onClick={() => {
-                console.log(dayjs(card.date));
-                console.log(now);
-              }}
-            >
-              {card.date}
-            </div>
+            <p>{card.date}</p>
           </div>
           {card.fileUrl && <a href={card.fileUrl}>Файл</a>}
-          <div className="card__wrap">
+          <div className="row_div">
             <button onClick={handleEditCard}>Редактировать</button>
             <button onClick={() => deleteCard(card.id)}>Удалить</button>
           </div>
@@ -71,26 +61,25 @@ const Card = ({ card, toggleCardDone, deleteCard }) => {
       )) ||
         (isCardEdit && (
           <li className="card">
-            <form onSubmit={handlerEditCard}>
+            <form className="form" onSubmit={handlerEditCard}>
               <input
                 onChange={handlerEditedTitleInput}
                 value={editedTitleInput}
                 type="text"
-                className="card__title-input"
               />
               <input
                 onChange={handlerEditedTextInput}
                 value={editedTextInput}
                 type="text"
-                className="card__text-input"
               />
-              <div className="card__wrap">
+              <div className="row_div">
                 <input
                   type="checkbox"
                   checked={card.done}
                   onChange={() => toggleCardDone(card)}
                 />
                 <DatePicker
+                  className="datepicker"
                   selected={editedDateInput}
                   onChange={handlerEditedCardDate}
                   showTimeSelect

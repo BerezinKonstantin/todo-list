@@ -1,0 +1,129 @@
+@primary: rgb(228, 210, 215);
+@secondary: rgb(230, 168, 185);
+@btnColor: #ccc;
+@radius: 4px;
+@border: 1px solid grey;
+
+html,
+body {
+  font-size: 16px;
+}
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: auto;
+  padding: 0;
+}
+.App {
+  margin: 0;
+  display: block;
+  font-style: normal;
+  font-weight: 400;
+  font-family: "Roboto", Arial, sans-serif;
+  color: black;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+.column_div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.row_div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  max-width: 60%;
+}
+.header {
+  &:extend(.column_div);
+  padding: 30px 0 16px;
+  h1 {
+    font-size: 32px;
+    margin: 0 auto 15px;
+  }
+}
+.form {
+  &:extend(.column_div);
+  min-width: 390px;
+  background-color: @primary;
+  & {
+    border-radius: 6px 6px 0 0;
+  }
+  & + & {
+    border-radius: 0 0 6px 6px;
+  }
+  input,
+  textarea {
+    width: 90%;
+    padding: 3px 6px;
+    margin: 10px auto 0;
+    font-family: inherit;
+    border-radius: @radius;
+    border: @border;
+  }
+  .datepicker {
+    display: block;
+    width: min-content;
+    border-radius: @radius;
+  }
+}
+.list {
+  &:extend(.column_div);
+  margin: 16px auto;
+}
+button {
+  font-family: inherit;
+  font-size: inherit;
+  display: inline-block;
+  padding: 3px 6px;
+  border-radius: @radius;
+  border: @border;
+  margin: 16px auto;
+  background-color: @btnColor;
+  text-decoration: none;
+  width: 50%;
+  .disabled & {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  &:hover,
+  &:focus {
+    background-color: darken(@btnColor, 20%);
+  }
+  .row_div & {
+    margin: 12px 5px;
+    min-width: fit-content;
+  }
+}
+.card {
+  &:extend(.column_div);
+  width: 390px;
+  border-radius: @radius;
+  background-color: @secondary;
+  margin: 6px auto;
+  &.late {
+    background-color: rgb(255, 41, 41);
+  }
+  &.done {
+    background-color: rgb(41, 255, 77);
+  }
+  h2 {
+    max-width: 60%;
+    font-size: 24px;
+    margin: 15px auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  p {
+    max-width: 90%;
+    font-size: 16px;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+  }
+}

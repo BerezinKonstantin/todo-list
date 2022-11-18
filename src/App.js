@@ -99,49 +99,52 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <header>
-        <h1>To Do List</h1>
-        <p> У вас {todos.length} задач</p>
+    <div className="App column_div">
+      <header className="header">
+        <h1>TO DO List</h1>
+        <p> Количество задач: {todos.length} </p>
       </header>
-      <form onSubmit={createCard}>
-        <input
-          type="text"
-          value={titleInput}
-          onChange={(e) => setTitleInput(e.target.value)}
-        ></input>
-        <textarea
-          value={textInput}
-          onChange={(e) => setTextInput(e.target.value)}
-          placeholder="Описание задачи"
-        ></textarea>
-        <DatePicker
-          selected={dateInput}
-          onChange={handlerDateChange}
-          showTimeSelect
-          timeFormat="HH:mm"
-          dateFormat="dd.MMM.yy, hh:mm"
-          placeholderText="Click to select a date"
-        />
-        <button type="submit">Create</button>
-      </form>
-      <form onSubmit={formFileHandler}>
-        <input type="file" className="input" onChange={() => setProgress(0)} />
-        <button type="submit">Загрузить файл</button>
-        {progress > 0 && <p>Uploading done {progress}%</p>}
-      </form>
-      <main>
-        <ul className="list">
-          {todos.map((card, index) => (
-            <Card
-              card={card}
-              key={index}
-              deleteCard={deleteCard}
-              toggleCardDone={toggleCardDone}
-            ></Card>
-          ))}
-        </ul>
-      </main>
+      <div className="column_div">
+        <form className="form" onSubmit={createCard}>
+          <input
+            type="text"
+            value={titleInput}
+            onChange={(e) => setTitleInput(e.target.value)}
+            placeholder="Заголовок"
+          ></input>
+          <textarea
+            value={textInput}
+            onChange={(e) => setTextInput(e.target.value)}
+            placeholder="Описание задачи"
+          ></textarea>
+          <DatePicker
+            className="datepicker"
+            selected={dateInput}
+            onChange={handlerDateChange}
+            showTimeSelect
+            timeFormat="HH:mm"
+            dateFormat="dd.MMM.yy, hh:mm"
+            placeholderText="Выберите дату"
+          />
+          <button type="submit">Добавить задачу</button>
+        </form>
+        <form className="form" onSubmit={formFileHandler}>
+          <input type="file" onChange={() => setProgress(0)} />
+          <button type="submit">Загрузить файл</button>
+          {progress > 0 && <p>Uploading done {progress}%</p>}
+        </form>
+      </div>
+
+      <ul className="list">
+        {todos.map((card, index) => (
+          <Card
+            card={card}
+            key={index}
+            deleteCard={deleteCard}
+            toggleCardDone={toggleCardDone}
+          ></Card>
+        ))}
+      </ul>
     </div>
   );
 }
