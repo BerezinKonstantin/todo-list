@@ -15,6 +15,8 @@ const Card = ({ card, toggleCardDone, deleteCard }) => {
   const isLate = dayjs(card.date).isBefore(now);
   const handleEditCard = () => {
     setIsCardEdit(true);
+    setEditedTitleInput(card.title);
+    setEditedTextInput(card.description);
   };
   //Обработчики данных редактируемой карточки
   const handlerEditedTitleInput = (e) => {
