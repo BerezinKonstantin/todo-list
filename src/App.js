@@ -26,8 +26,8 @@ function App() {
   const [formatedDate, setFormatedDate] = useState("");
   const [fileUrl, setFileUrl] = useState("");
   const [progress, setProgress] = useState(0);
-
-  const handlerDataChange = (date) => {
+  //Обработчики данных создаваемой карточки
+  const handlerDateChange = (date) => {
     setDateInput(date);
     const formatedDate = dayjs(date).format("D.MMM.YY HH:mm");
     setFormatedDate(formatedDate);
@@ -55,7 +55,6 @@ function App() {
       (error) => console.log(error),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log("File available at", downloadURL);
           setFileUrl(downloadURL);
         });
       }
@@ -103,7 +102,7 @@ function App() {
     <div className="App">
       <header>
         <h1>To Do List</h1>
-        <p> Ваши задачи: {todos.length}</p>
+        <p> У вас {todos.length} задач</p>
       </header>
       <form onSubmit={createCard}>
         <input
@@ -118,7 +117,7 @@ function App() {
         ></textarea>
         <DatePicker
           selected={dateInput}
-          onChange={handlerDataChange}
+          onChange={handlerDateChange}
           showTimeSelect
           timeFormat="HH:mm"
           dateFormat="dd.MMM.yy, hh:mm"
