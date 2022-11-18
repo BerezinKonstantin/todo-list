@@ -33,5 +33,5 @@
 Не требуется делать супер-красивый UI и функции не описанные в задании.
 
 ## Результат работы
-
+Приложение на Google Firebase Hosting https://todolist-bko.web.app/
 На Github https://github.com/BerezinKonstantin/todo-list
