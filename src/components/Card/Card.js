@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { database } from "../../firebase";
+import { db } from "../../firebase";
 import { updateDoc, doc } from "firebase/firestore";
 import DatePicker from "react-datepicker";
 const dayjs = require("dayjs");
@@ -50,7 +50,7 @@ const Card = ({ card, toggleCardDone, deleteCard }) => {
    */
   const handlerEditCard = async (e) => {
     e.preventDefault();
-    await updateDoc(doc(database, "todos", card.id), {
+    await updateDoc(doc(db, "todos", card.id), {
       title: editedTitleInput,
       description: editedTextInput,
       date: editedFormatedDate,
