@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { db } from "../../firebase";
+import { db } from "../firebase";
 import { updateDoc, doc } from "firebase/firestore";
 import DatePicker from "react-datepicker";
 const dayjs = require("dayjs");
