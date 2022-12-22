@@ -1,15 +1,15 @@
 import React from "react";
 
-const Header = ({ todos, auth }) => {
+const Header = ({ todos, user }) => {
   return (
     <header className="header">
-      <h1>TO DO List</h1>
+      <h1>To Do List</h1>
+      {user && <p>Привет, {user.displayName}</p>}
       {todos ? (
         <p>Количество ваших задач: {todos.length}</p>
       ) : (
         <p>У вас пока нет задач</p>
       )}
-      {auth.currentUser && <p>Привет, {auth.currentUser.displayName}</p>}
     </header>
   );
 };

@@ -1,26 +1,18 @@
 import React, { useState } from "react";
-import { db } from "../firebase";
-import { updateDoc, doc } from "firebase/firestore";
+
 import DatePicker from "react-datepicker";
 const dayjs = require("dayjs");
 
-const Card = ({ card, toggleCardDone, deleteCard }) => {
+const Card = ({ card, toggleCardDone, deleteCard, updateCard }) => {
   const [isCardEdit, setIsCardEdit] = useState(false);
   const [editedTitleInput, setEditedTitleInput] = useState(card.title);
   const [editedTextInput, setEditedTextInput] = useState(card.description);
   const [editedDateInput, setEditedDateInput] = useState("");
-  const [editedFormatedDate, setEditedFormatedDate] = useState("");
-
+  const [editedFormatedDate, setEditedFormatedDate] = useState(
+    card.formatedDate
+  );
   const now = dayjs();
   const isLate = dayjs(card.date).isBefore(now);
-  /**
-   * Функция переводит статус карточки в редактируемую и устанавливает начальные значения инпутов
-   */
-  const handleEditCard = () => {
-    setIsCardEdit(true);
-    setEditedTitleInput(card.title);
-    setEditedTextInput(card.description);
-  };
   /**
    * Обработчик значения поля ввода заголовка карточки
    * @param {*} e событие изменения поля ввода
@@ -48,13 +40,15 @@ const Card = ({ card, toggleCardDone, deleteCard }) => {
    * Функция редактирование карточки. Обновляет карточку в базе данных с новыми переданными значениями
    * @param {*} e событие отправки формы
    */
-  const handlerEditCard = async (e) => {
+  const handlerEditCard = (e) => {
     e.preventDefault();
-    await updateDoc(doc(db, "todos", card.id), {
-      title: editedTitleInput,
-      description: editedTextInput,
-      date: editedFormatedDate,
-    });
+    updateCard(
+      editedTitleInput,
+      editedTextInput,
+      editedDateInput,
+      editedFormatedDate,
+      card.id
+    );
     setIsCardEdit(false);
   };
 
@@ -70,12 +64,16 @@ const Card = ({ card, toggleCardDone, deleteCard }) => {
               checked={card.done}
               onChange={() => toggleCardDone(card)}
             />
-            <p>{card.date}</p>
+            <p>{card.formatedDate}</p>
           </div>
-          {card.fileUrl && <a href={card.fileUrl}>Файл</a>}
+          {card.fileUrl && (
+            <a href={card.fileUrl} target="_blank" rel="noreferrer">
+              Файл
+            </a>
+          )}
           <div className="row_div">
-            <button onClick={handleEditCard}>Редактировать</button>
-            <button onClick={() => deleteCard(card.id)}>Удалить</button>
+            <button onClick={() => setIsCardEdit(true)}>Редактировать</button>
+            <button onClick={() => deleteCard(card)}>Удалить</button>
           </div>
         </li>
       )) ||

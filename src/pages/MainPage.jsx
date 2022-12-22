@@ -4,10 +4,10 @@ import DatePicker from "react-datepicker";
 import Card from "../components/Card";
 
 const MainPage = ({
-  auth,
+  user,
   todos,
   values,
-  dateInput,
+  date,
   progress,
   setProgress,
   formFileHandler,
@@ -16,8 +16,9 @@ const MainPage = ({
   createCard,
   deleteCard,
   toggleCardDone,
+  updateCard,
 }) => {
-  return auth.currentUser ? (
+  return user ? (
     <main className="App column_div">
       <div className="column_div">
         <form className="form" onSubmit={createCard}>
@@ -36,7 +37,7 @@ const MainPage = ({
           />
           <DatePicker
             className="datepicker"
-            selected={dateInput}
+            selected={date}
             onChange={handlerDateChange}
             showTimeSelect
             timeFormat="HH:mm"
@@ -59,6 +60,7 @@ const MainPage = ({
               key={index}
               deleteCard={deleteCard}
               toggleCardDone={toggleCardDone}
+              updateCard={updateCard}
             ></Card>
           ))}
         </ul>

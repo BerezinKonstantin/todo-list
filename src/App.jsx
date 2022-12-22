@@ -1,6 +1,3 @@
-// TO DO Роутинг: Сделать страницу для авторизации, затем перенаправлять на страницу с карточками.
-// Возможно поднять контекст для хранения авторизации
-
 import React, { useState, useEffect } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
@@ -13,7 +10,6 @@ import {
   query,
   collection,
   onSnapshot,
-  getDocs,
   where,
   updateDoc,
   doc,
@@ -30,25 +26,26 @@ const App = () => {
   const [values, setValues] = useState({});
   //const [titleInput, setTitleInput] = useState("");
   //const [textInput, setTextInput] = useState("");
-  const [dateInput, setDateInput] = useState("");
+  const [date, setDate] = useState("");
   const [formatedDate, setFormatedDate] = useState("");
   const [fileUrl, setFileUrl] = useState("");
   const [progress, setProgress] = useState(0);
-  //const [user, setUser] = useState();
+  const [user, setUser] = useState();
   const auth = getAuth();
-  let user;
-  let navigate = useNavigate();
+  //let user;
+  const navigate = useNavigate();
   const handlerSignIn = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
+        //const credential = GoogleAuthProvider.credentialFromResult(result);
         //const token = credential.accessToken;
-        const user = result.user;
-        //setUser(user);
-        console.log(user);
-        console.log(user.uid);
+        //user = result.user;
+        setUser(result.user);
+        //console.log(result.user);
+        //console.log(user.uid);
         navigate("/");
+        //return user;
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -61,7 +58,7 @@ const App = () => {
    * @param {timestamp} date дата в любом формате
    */
   const handlerDateChange = (date) => {
-    setDateInput(date);
+    setDate(date);
     const formatedDate = dayjs(date).format("D.MMM.YY HH:mm");
     setFormatedDate(formatedDate);
   };
@@ -120,21 +117,19 @@ const App = () => {
       return;
     }
     await addDoc(collection(db, "todos"), {
-      description: values.title,
-      title: values.text,
+      description: values.text,
+      title: values.title,
       done: false,
-      date: formatedDate,
+      date: date,
+      formatedDate: formatedDate,
       fileUrl: fileUrl,
       uid: user.uid,
     });
   };
   useEffect(() => {
-    console.log(auth);
-    if (auth.currentUser) {
-      const q = query(
-        collection(db, "todos"),
-        where("uid", "==", auth.currentUser.uid)
-      );
+    //console.log(auth);
+    if (user) {
+      const q = query(collection(db, "todos"), where("uid", "==", user.uid));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         let todosArr = [];
         querySnapshot.forEach((doc) => {
@@ -144,7 +139,7 @@ const App = () => {
       });
       return () => unsubscribe();
     }
-  }, [auth.currentUser]);
+  }, [user]);
   /**
    * Функция редактирования карточки. Изменяет статус заавершенности карточки на противоположный
    * @param {object} card обьект карточки
@@ -154,17 +149,26 @@ const App = () => {
       done: !card.done,
     });
   };
+  const updateCard = async (title, description, date, formatedDate, id) => {
+    console.log(title, description, date, formatedDate, id);
+    await updateDoc(doc(db, "todos", id), {
+      title: title,
+      description: description,
+      date: date,
+      formatedDate: formatedDate,
+    });
+  };
   /**
    * Функция удаления карточки по переданному идентификатору
    * @param {string} id идентификатор карточки
    */
-  const deleteCard = async (id) => {
-    await deleteDoc(doc(db, "todos", id));
+  const deleteCard = async (card) => {
+    await deleteDoc(doc(db, "todos", card.id));
   };
 
   return (
     <>
-      <Header todos={todos} auth={auth} />
+      <Header todos={todos} user={user} />
       <Routes>
         <Route
           path="auth"
@@ -174,10 +178,10 @@ const App = () => {
           path="/*"
           element={
             <MainPage
-              auth={auth}
+              user={user}
               todos={todos}
               values={values}
-              dateInput={dateInput}
+              date={date}
               progress={progress}
               setProgress={setProgress}
               formFileHandler={formFileHandler}
@@ -186,6 +190,7 @@ const App = () => {
               createCard={createCard}
               deleteCard={deleteCard}
               toggleCardDone={toggleCardDone}
+              updateCard={updateCard}
             />
           }
         />
