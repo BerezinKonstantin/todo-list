@@ -4,8 +4,8 @@ import "./App.css";
 import Header from "./components/Header";
 import MainPage from "./pages/MainPage";
 import AuthPage from "./pages/AuthPage";
-import { db, storage } from "./firebase";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { db, storage, auth } from "./firebase";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import {
   query,
   collection,
@@ -15,6 +15,7 @@ import {
   doc,
   addDoc,
   deleteDoc,
+  orderBy,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
@@ -24,28 +25,19 @@ const dayjs = require("dayjs");
 const App = () => {
   const [todos, setTodos] = useState([]);
   const [values, setValues] = useState({});
-  //const [titleInput, setTitleInput] = useState("");
-  //const [textInput, setTextInput] = useState("");
   const [date, setDate] = useState("");
   const [formatedDate, setFormatedDate] = useState("");
   const [fileUrl, setFileUrl] = useState("");
   const [progress, setProgress] = useState(0);
   const [user, setUser] = useState();
-  const auth = getAuth();
-  //let user;
+
   const navigate = useNavigate();
   const handlerSignIn = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
-        //const credential = GoogleAuthProvider.credentialFromResult(result);
-        //const token = credential.accessToken;
-        //user = result.user;
         setUser(result.user);
-        //console.log(result.user);
-        //console.log(user.uid);
         navigate("/");
-        //return user;
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -128,9 +120,12 @@ const App = () => {
     // Добавить очистку формы и файла
   };
   useEffect(() => {
-    //console.log(auth);
     if (user) {
-      const q = query(collection(db, "todos"), where("uid", "==", user.uid));
+      const q = query(
+        collection(db, "todos"),
+        where("uid", "==", user.uid),
+        orderBy("date")
+      );
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         let todosArr = [];
         querySnapshot.forEach((doc) => {
@@ -151,7 +146,6 @@ const App = () => {
     });
   };
   const updateCard = async (title, description, date, formatedDate, id) => {
-    console.log(title, description, date, formatedDate, id);
     await updateDoc(doc(db, "todos", id), {
       title: title,
       description: description,
