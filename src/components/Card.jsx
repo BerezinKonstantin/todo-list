@@ -7,7 +7,9 @@ const Card = ({ card, toggleCardDone, deleteCard, updateCard }) => {
   const [isCardEdit, setIsCardEdit] = useState(false);
   const [editedTitleInput, setEditedTitleInput] = useState(card.title);
   const [editedTextInput, setEditedTextInput] = useState(card.description);
-  const [editedDateInput, setEditedDateInput] = useState("");
+  const [editedDateInput, setEditedDateInput] = useState(
+    card.date ? new Date(card.date.seconds * 1000) : ""
+  );
   const [editedFormatedDate, setEditedFormatedDate] = useState(
     card.formatedDate
   );
@@ -107,7 +109,7 @@ const Card = ({ card, toggleCardDone, deleteCard, updateCard }) => {
                   onChange={handlerEditedCardDate}
                   showTimeSelect
                   timeFormat="HH:mm"
-                  dateFormat="dd.MMM.yy, hh:mm"
+                  dateFormat="dd.MMM.yy, hh:mm aa"
                   placeholderText="Click to select a date"
                 />
               </div>

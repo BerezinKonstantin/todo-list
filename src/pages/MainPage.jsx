@@ -41,7 +41,7 @@ const MainPage = ({
             onChange={handlerDateChange}
             showTimeSelect
             timeFormat="HH:mm"
-            dateFormat="dd.MMM.yy, hh:mm"
+            dateFormat="dd.MMM.yy, hh:mm aa"
             placeholderText="Выберите дату"
           />
           <button type="submit">Добавить задачу</button>
@@ -54,10 +54,10 @@ const MainPage = ({
       </div>
       {todos && (
         <ul className="list">
-          {todos.map((card, index) => (
+          {todos.map((card) => (
             <Card
               card={card}
-              key={index}
+              key={card.id}
               deleteCard={deleteCard}
               toggleCardDone={toggleCardDone}
               updateCard={updateCard}
