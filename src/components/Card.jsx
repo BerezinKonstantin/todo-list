@@ -12,7 +12,7 @@ const Card = ({ card, toggleCardDone, deleteCard, updateCard }) => {
     card.formatedDate
   );
   const now = dayjs();
-  const isLate = dayjs(card.date).isBefore(now);
+  const isLate = dayjs(card.formatedDate).isBefore(now);
   /**
    * Обработчик значения поля ввода заголовка карточки
    * @param {*} e событие изменения поля ввода
@@ -36,11 +36,16 @@ const Card = ({ card, toggleCardDone, deleteCard, updateCard }) => {
     const formatedEditDate = dayjs(date).format("D.MMM.YY HH:mm");
     setEditedFormatedDate(formatedEditDate);
   };
+  const handlerEditCard = () => {
+    setIsCardEdit(true);
+    setEditedTitleInput(card.title);
+    setEditedTextInput(card.description);
+  };
   /**
    * Функция редактирование карточки. Обновляет карточку в базе данных с новыми переданными значениями
    * @param {*} e событие отправки формы
    */
-  const handlerEditCard = (e) => {
+  const submitEditCard = (e) => {
     e.preventDefault();
     updateCard(
       editedTitleInput,
@@ -72,14 +77,14 @@ const Card = ({ card, toggleCardDone, deleteCard, updateCard }) => {
             </a>
           )}
           <div className="row_div">
-            <button onClick={() => setIsCardEdit(true)}>Редактировать</button>
+            <button onClick={handlerEditCard}>Редактировать</button>
             <button onClick={() => deleteCard(card)}>Удалить</button>
           </div>
         </li>
       )) ||
         (isCardEdit && (
           <li className="card">
-            <form className="form" onSubmit={handlerEditCard}>
+            <form className="form" onSubmit={submitEditCard}>
               <input
                 onChange={handlerEditedTitleInput}
                 value={editedTitleInput}

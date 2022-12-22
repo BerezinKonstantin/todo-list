@@ -112,8 +112,8 @@ const App = () => {
    */
   const createCard = async (e) => {
     e.preventDefault();
-    if (values.text === "") {
-      alert("Необходимо добавить описание задачи");
+    if (values.title === "") {
+      alert("Необходимо добавить название задачи");
       return;
     }
     await addDoc(collection(db, "todos"), {
@@ -125,6 +125,7 @@ const App = () => {
       fileUrl: fileUrl,
       uid: user.uid,
     });
+    // Добавить очистку формы и файла
   };
   useEffect(() => {
     //console.log(auth);
