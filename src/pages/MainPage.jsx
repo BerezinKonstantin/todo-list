@@ -47,8 +47,12 @@ const MainPage = ({
           <button type="submit">Добавить задачу</button>
         </form>
         <form className="form" onSubmit={formFileHandler}>
-          <input type="file" onChange={() => setProgress(0)} />
-          <button type="submit">Загрузить файл</button>
+          <label class="input-file">
+            <input type="file" name="file" onChange={formFileHandler} />
+            <span class="input-file-btn">Прикрепить файл</span>
+            <span class="input-file-text">Максимум 10мб</span>
+          </label>
+
           {progress > 0 && <p>Загружено на {progress}%</p>}
         </form>
       </div>

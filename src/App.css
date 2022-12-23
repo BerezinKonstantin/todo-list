@@ -47,10 +47,6 @@ body {
 }
 .form {
   min-width: 390px;
-  border-radius: 6px 6px 0 0;
-}
-.form + .form {
-  border-radius: 0 0 6px 6px;
 }
 .form input,
 .form textarea {
@@ -69,11 +65,13 @@ body {
 .list {
   margin: 16px auto;
 }
-button {
+button,
+.input-file-btn {
   font-family: inherit;
   font-size: inherit;
   color: aliceblue;
   display: inline-block;
+  cursor: pointer;
   padding: 3px 6px;
   margin: 12px 5px;
   border-radius: 4px;
@@ -138,5 +136,36 @@ button:hover {
 }
 .card_edit {
   padding: 0;
+}
+.input-file {
+  position: relative;
+  display: inline-block;
+  max-width: 174px;
+}
+.input-file-btn {
+  padding: 3px 20px;
+  margin: 0;
+}
+.input-file-btn:hover {
+  background-color: #0e4377;
+  transition: linear 0.35s;
+}
+.input-file-text {
+  margin: 6px 0;
+  display: inline-block;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+.input-file input[type="file"] {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+  display: block;
+  width: 0;
+  height: 0;
 }
 /*# sourceMappingURL=app.css.map */

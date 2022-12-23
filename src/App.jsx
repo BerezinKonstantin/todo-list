@@ -66,7 +66,11 @@ const App = () => {
    */
   const formFileHandler = (e) => {
     e.preventDefault();
-    const file = e.target[0].files[0];
+    setProgress(null);
+    const file = e.target.closest("form")[0].files[0];
+    e.target
+      .closest(".input-file")
+      .querySelector(".input-file-text").textContent = file.name;
     uploadFiles(file);
   };
   /**
@@ -93,6 +97,7 @@ const App = () => {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setFileUrl(downloadURL);
+          console.log(downloadURL);
         });
       }
     );

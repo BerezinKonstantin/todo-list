@@ -50,12 +50,6 @@ body {
 .form {
   &:extend(.column_div);
   min-width: 390px;
-  & {
-    border-radius: 6px 6px 0 0;
-  }
-  & + & {
-    border-radius: 0 0 6px 6px;
-  }
   input,
   textarea {
     width: 90%;
@@ -80,6 +74,7 @@ button {
   font-size: inherit;
   color: aliceblue;
   display: inline-block;
+  cursor: pointer;
   padding: 3px 6px;
   margin: 12px 5px;
   border-radius: @radius;
@@ -148,4 +143,36 @@ button {
 }
 .card_edit {
   padding: 0;
+}
+.input-file {
+  position: relative;
+  display: inline-block;
+  max-width: 174px;
+}
+.input-file-btn {
+  &:extend(button);
+  padding: 3px 20px;
+  margin: 0;
+  &:hover {
+    background-color: darken(@btnColor, 20%);
+    transition: linear 0.35s;
+  }
+}
+.input-file-text {
+  margin: 6px 0;
+  display: inline-block;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+.input-file input[type="file"] {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+  display: block;
+  width: 0;
+  height: 0;
 }
