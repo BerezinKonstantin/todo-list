@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import DatePicker from "react-datepicker";
 const dayjs = require("dayjs");
 
@@ -63,14 +62,18 @@ const Card = ({ card, toggleCardDone, deleteCard, updateCard }) => {
     <>
       {(!isCardEdit && (
         <li className={"card" + (card.done ? " done" : isLate ? " late" : "")}>
-          <h2>{card.title}</h2>
-          <p>{card.description}</p>
-          <div className="row_div">
+          <label for="checkbox">
             <input
               type="checkbox"
+              id="checkbox"
               checked={card.done}
               onChange={() => toggleCardDone(card)}
             />
+            <span class="visible-checkbox"></span>
+          </label>
+          <div className="column_div">
+            <h2>{card.title}</h2>
+            <p>{card.description}</p>
             <p>{card.formatedDate}</p>
           </div>
           {card.fileUrl && (
@@ -78,7 +81,7 @@ const Card = ({ card, toggleCardDone, deleteCard, updateCard }) => {
               Файл
             </a>
           )}
-          <div className="row_div">
+          <div className="column_div">
             <button onClick={handlerEditCard}>Редактировать</button>
             <button onClick={() => deleteCard(card)}>Удалить</button>
           </div>
@@ -110,7 +113,8 @@ const Card = ({ card, toggleCardDone, deleteCard, updateCard }) => {
                   showTimeSelect
                   timeFormat="HH:mm"
                   dateFormat="dd.MMM.yy, hh:mm aa"
-                  placeholderText="Click to select a date"
+                  placeholderText="Выберите дату"
+                  closeOnScroll={true}
                 />
               </div>
               <button type="submit">Сохранить</button>
