@@ -5,6 +5,7 @@ import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
 const dayjs = require("dayjs");
 
 const Card = ({ card, toggleCardDone, deleteCard, updateCard }) => {
@@ -79,7 +80,11 @@ const Card = ({ card, toggleCardDone, deleteCard, updateCard }) => {
           </div>
           {card.fileUrl && (
             <a href={card.fileUrl} target="_blank" rel="noreferrer">
-              Файл
+              <Tooltip title="Прикрепленный файл" placement="right">
+                <IconButton>
+                  <AttachFileIcon />
+                </IconButton>
+              </Tooltip>
             </a>
           )}
           <div className="column_div">
