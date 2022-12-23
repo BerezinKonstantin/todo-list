@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header";
@@ -18,7 +18,6 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-
 import "react-datepicker/dist/react-datepicker.css";
 const dayjs = require("dayjs");
 
@@ -28,9 +27,9 @@ const App = () => {
   const [date, setDate] = useState("");
   const [formatedDate, setFormatedDate] = useState("");
   const [fileUrl, setFileUrl] = useState("");
+  const [fileName, setFileName] = useState("");
   const [progress, setProgress] = useState(0);
   const [user, setUser] = useState();
-
   const navigate = useNavigate();
   const handlerSignIn = () => {
     const provider = new GoogleAuthProvider();
@@ -45,6 +44,17 @@ const App = () => {
         console.log(errorCode, errorMessage);
       });
   };
+  const resetForm = useCallback(
+    (emptyValues = {}, empty = "") => {
+      setValues(emptyValues);
+      setDate(empty);
+      setFormatedDate(empty);
+      setFileUrl(empty);
+      setFileName(empty);
+      setProgress(null);
+    },
+    [setValues, setDate, setFileUrl, setFormatedDate, setFileName, setProgress]
+  );
   /**
    * Обработчик даты. Принимает выбраную дату и форматирует ее к установленному виду
    * @param {timestamp} date дата в любом формате
@@ -68,9 +78,7 @@ const App = () => {
     e.preventDefault();
     setProgress(null);
     const file = e.target.closest("form")[0].files[0];
-    e.target
-      .closest(".input-file")
-      .querySelector(".input-file-text").textContent = file.name;
+    setFileName(file.name);
     uploadFiles(file);
   };
   /**
@@ -113,6 +121,7 @@ const App = () => {
       alert("Необходимо добавить название задачи");
       return;
     }
+    resetForm();
     await addDoc(collection(db, "todos"), {
       description: values.text || "",
       title: values.title,
@@ -122,7 +131,6 @@ const App = () => {
       fileUrl: fileUrl,
       uid: user.uid,
     });
-    //TO DO Добавить очистку формы и файла
   };
   useEffect(() => {
     if (user) {
@@ -183,7 +191,7 @@ const App = () => {
               values={values}
               date={date}
               progress={progress}
-              setProgress={setProgress}
+              fileName={fileName}
               formFileHandler={formFileHandler}
               handlerInputChange={handlerInputChange}
               handlerDateChange={handlerDateChange}

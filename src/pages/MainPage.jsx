@@ -9,7 +9,7 @@ const MainPage = ({
   values,
   date,
   progress,
-  setProgress,
+  fileName,
   formFileHandler,
   handlerInputChange,
   handlerDateChange,
@@ -50,7 +50,7 @@ const MainPage = ({
           <label className="input-file">
             <input type="file" name="file" onChange={formFileHandler} />
             <span className="input-file-btn">Прикрепить файл</span>
-            <span className="input-file-text">Максимум 10мб</span>
+            <span className="input-file-text">{fileName}</span>
           </label>
 
           {progress > 0 && <p>Загружено на {progress}%</p>}
