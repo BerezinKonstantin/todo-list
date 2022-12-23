@@ -89,13 +89,13 @@ const Card = ({ card, toggleCardDone, deleteCard, updateCard }) => {
           )}
           <div className="column_div">
             <Tooltip title="Редактировать" placement="right">
-              <IconButton>
-                <EditIcon onClick={handlerEditCard} />
+              <IconButton onClick={handlerEditCard}>
+                <EditIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Удалить" placement="right">
-              <IconButton>
-                <DeleteIcon onClick={() => deleteCard(card)} />
+              <IconButton onClick={() => deleteCard(card)}>
+                <DeleteIcon />
               </IconButton>
             </Tooltip>
           </div>

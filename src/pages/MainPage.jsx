@@ -47,10 +47,10 @@ const MainPage = ({
           <button type="submit">Добавить задачу</button>
         </form>
         <form className="form" onSubmit={formFileHandler}>
-          <label class="input-file">
+          <label className="input-file">
             <input type="file" name="file" onChange={formFileHandler} />
-            <span class="input-file-btn">Прикрепить файл</span>
-            <span class="input-file-text">Максимум 10мб</span>
+            <span className="input-file-btn">Прикрепить файл</span>
+            <span className="input-file-text">Максимум 10мб</span>
           </label>
 
           {progress > 0 && <p>Загружено на {progress}%</p>}
