@@ -104,12 +104,12 @@ const App = () => {
    */
   const createCard = async (e) => {
     e.preventDefault();
-    if (values.title === "") {
+    if (!values.title) {
       alert("Необходимо добавить название задачи");
       return;
     }
     await addDoc(collection(db, "todos"), {
-      description: values.text,
+      description: values.text || "",
       title: values.title,
       done: false,
       date: date,
@@ -117,7 +117,7 @@ const App = () => {
       fileUrl: fileUrl,
       uid: user.uid,
     });
-    // Добавить очистку формы и файла
+    //TO DO Добавить очистку формы и файла
   };
   useEffect(() => {
     if (user) {

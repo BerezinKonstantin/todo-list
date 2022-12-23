@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
+import Checkbox from "@mui/material/Checkbox";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 const dayjs = require("dayjs");
 
 const Card = ({ card, toggleCardDone, deleteCard, updateCard }) => {
@@ -62,16 +67,12 @@ const Card = ({ card, toggleCardDone, deleteCard, updateCard }) => {
     <>
       {(!isCardEdit && (
         <li className={"card" + (card.done ? " done" : isLate ? " late" : "")}>
-          <label for="checkbox">
-            <input
-              type="checkbox"
-              id="checkbox"
-              checked={card.done}
-              onChange={() => toggleCardDone(card)}
-            />
-            <span class="visible-checkbox"></span>
-          </label>
-          <div className="column_div">
+          <Checkbox
+            checked={card.done}
+            onChange={() => toggleCardDone(card)}
+            color="default"
+          />
+          <div className="card_column">
             <h2>{card.title}</h2>
             <p>{card.description}</p>
             <p>{card.formatedDate}</p>
@@ -82,14 +83,22 @@ const Card = ({ card, toggleCardDone, deleteCard, updateCard }) => {
             </a>
           )}
           <div className="column_div">
-            <button onClick={handlerEditCard}>Редактировать</button>
-            <button onClick={() => deleteCard(card)}>Удалить</button>
+            <Tooltip title="Редактировать" placement="right">
+              <IconButton>
+                <EditIcon onClick={handlerEditCard} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Удалить" placement="right">
+              <IconButton>
+                <DeleteIcon onClick={() => deleteCard(card)} />
+              </IconButton>
+            </Tooltip>
           </div>
         </li>
       )) ||
         (isCardEdit && (
-          <li className="card">
-            <form className="form" onSubmit={submitEditCard}>
+          <li className="card card_edit">
+            <form className="form form_edit" onSubmit={submitEditCard}>
               <input
                 onChange={handlerEditedTitleInput}
                 value={editedTitleInput}
@@ -101,8 +110,7 @@ const Card = ({ card, toggleCardDone, deleteCard, updateCard }) => {
                 type="text"
               />
               <div className="row_div">
-                <input
-                  type="checkbox"
+                <Checkbox
                   checked={card.done}
                   onChange={() => toggleCardDone(card)}
                 />
@@ -116,8 +124,8 @@ const Card = ({ card, toggleCardDone, deleteCard, updateCard }) => {
                   placeholderText="Выберите дату"
                   closeOnScroll={true}
                 />
+                <button type="submit">Сохранить</button>
               </div>
-              <button type="submit">Сохранить</button>
             </form>
           </li>
         ))}
