@@ -52,7 +52,6 @@ const MainPage = ({
             <span className="input-file-btn">Прикрепить файл</span>
             <span className="input-file-text">{fileName}</span>
           </label>
-
           {progress > 0 && <p>Загружено на {progress}%</p>}
         </form>
       </div>

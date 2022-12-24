@@ -5,7 +5,7 @@ import Header from "./components/Header";
 import MainPage from "./pages/MainPage";
 import AuthPage from "./pages/AuthPage";
 import { db, storage, auth } from "./firebase";
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 import {
   query,
   collection,
@@ -22,7 +22,7 @@ import "react-datepicker/dist/react-datepicker.css";
 const dayjs = require("dayjs");
 
 const App = () => {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(null);
   const [values, setValues] = useState({});
   const [date, setDate] = useState("");
   const [formatedDate, setFormatedDate] = useState("");
@@ -44,6 +44,24 @@ const App = () => {
         console.log(errorCode, errorMessage);
       });
   };
+  const handlerSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        setUser(null);
+        setTodos(null);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
+  };
+  const handlerInputChange = (event) => {
+    const target = event.target;
+    const name = target.name;
+    const value = target.value;
+    setValues({ ...values, [name]: value });
+  };
   const resetForm = useCallback(
     (emptyValues = {}, empty = "") => {
       setValues(emptyValues);
@@ -63,12 +81,6 @@ const App = () => {
     setDate(date);
     const formatedDate = dayjs(date).format("D.MMM.YY HH:mm");
     setFormatedDate(formatedDate);
-  };
-  const handlerInputChange = (event) => {
-    const target = event.target;
-    const name = target.name;
-    const value = target.value;
-    setValues({ ...values, [name]: value });
   };
   /**
    * Обработчик загрузки файла. При отправке формы находит файл и вызывает функцию его загрузки
@@ -105,7 +117,6 @@ const App = () => {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setFileUrl(downloadURL);
-          console.log(downloadURL);
         });
       }
     );
@@ -176,7 +187,7 @@ const App = () => {
 
   return (
     <>
-      <Header todos={todos} user={user} />
+      <Header todos={todos} user={user} handlerSignOut={handlerSignOut} />
       <Routes>
         <Route
           path="auth"
