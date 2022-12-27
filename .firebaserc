@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "todolist-bko"
-  }
+    "default": "todo-list-c1818",
+    "todo-list": "todo-list-c1818"
+  },
+  "targets": {},
+  "etags": {}
 }
