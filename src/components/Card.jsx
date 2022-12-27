@@ -81,7 +81,7 @@ const Card = ({ card, toggleCardDone, deleteCard, updateCard }) => {
           {card.fileUrl && (
             <a href={card.fileUrl} target="_blank" rel="noreferrer">
               <Tooltip title="Прикрепленный файл" placement="right">
-                <IconButton>
+                <IconButton className="card_button">
                   <AttachFileIcon />
                 </IconButton>
               </Tooltip>
@@ -89,12 +89,15 @@ const Card = ({ card, toggleCardDone, deleteCard, updateCard }) => {
           )}
           <div className="column_div">
             <Tooltip title="Редактировать" placement="right">
-              <IconButton onClick={handlerEditCard}>
+              <IconButton onClick={handlerEditCard} className="card_button">
                 <EditIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Удалить" placement="right">
-              <IconButton onClick={() => deleteCard(card)}>
+              <IconButton
+                onClick={() => deleteCard(card)}
+                className="card_button"
+              >
                 <DeleteIcon />
               </IconButton>
             </Tooltip>
@@ -103,7 +106,7 @@ const Card = ({ card, toggleCardDone, deleteCard, updateCard }) => {
       )) ||
         (isCardEdit && (
           <li className="card card_edit">
-            <form className="form form_edit" onSubmit={submitEditCard}>
+            <form className="form_edit" onSubmit={submitEditCard}>
               <input
                 onChange={handlerEditedTitleInput}
                 value={editedTitleInput}
@@ -127,9 +130,10 @@ const Card = ({ card, toggleCardDone, deleteCard, updateCard }) => {
                   timeFormat="HH:mm"
                   dateFormat="dd.MMM.yy, hh:mm aa"
                   placeholderText="Выберите дату"
-                  closeOnScroll={true}
                 />
-                <button type="submit">Сохранить</button>
+                <button type="submit" className="button card_button">
+                  Сохранить
+                </button>
               </div>
             </form>
           </li>

@@ -21,7 +21,7 @@ const MainPage = ({
   return user ? (
     <main className="App column_div">
       <div className="column_div">
-        <form className="form" onSubmit={createCard}>
+        <form onSubmit={createCard}>
           <input
             type="text"
             name="title"
@@ -44,9 +44,11 @@ const MainPage = ({
             dateFormat="dd.MMM.yy, hh:mm aa"
             placeholderText="Выберите дату"
           />
-          <button type="submit">Добавить задачу</button>
+          <button type="submit" className="button">
+            Добавить задачу
+          </button>
         </form>
-        <form className="form" onSubmit={formFileHandler}>
+        <form onSubmit={formFileHandler}>
           <label className="input-file">
             <input type="file" name="file" onChange={formFileHandler} />
             <span className="input-file-btn">Прикрепить файл</span>
@@ -56,7 +58,7 @@ const MainPage = ({
         </form>
       </div>
       {todos && (
-        <ul className="list">
+        <ul>
           {todos.map((card) => (
             <Card
               card={card}

@@ -36,3 +36,10 @@
 Приложение на Google Firebase Hosting https://todolist-bko.web.app/  
 На Github https://github.com/BerezinKonstantin/todo-list  
 На Gitlab https://gitlab.com/BerezinKonstantin/todo-list
+
+
+## ToDo
+- Мобильная верстка
+- Разбить стили на модули
+- Прелоудер
+- Хранение пользователя в localStorage

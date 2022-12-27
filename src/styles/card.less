@@ -1,0 +1,60 @@
+.card {
+  &:extend(.row_div);
+  position: relative;
+  width: 390px;
+  height: fit-content;
+  border-radius: @radius;
+  background-color: @primary;
+  margin: 0 auto 12px;
+  padding: 12px 6px;
+  text-align: left;
+  @media (max-width: 425px) {
+    width: 90%;
+  }
+
+  .datepicker {
+    width: 90%;
+  }
+  &.late {
+    background-color: @lateColor;
+  }
+  &.done {
+    background-color: @doneColor;
+  }
+  h2 {
+    .text(1);
+    margin: 0 0 8px 0;
+    font-size: 24px;
+    text-align: left;
+    @media (max-width: 425px) {
+      .text(2);
+      font-size: 18px;
+    }
+  }
+  p {
+    .text(2);
+    margin: 0 0 6px 0;
+    font-size: 16px;
+    text-align: left;
+  }
+  .card_button {
+    width: 50%;
+  }
+}
+.card_column {
+  &:extend(.column_div);
+  width: 70%;
+}
+.form_edit {
+  .button,
+  .datepicker {
+    margin: 0 6px;
+  }
+  @media (max-width: 375px) {
+    min-width: 0;
+    width: 90%;
+  }
+}
+.card_edit {
+  padding: 0;
+}

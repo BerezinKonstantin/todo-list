@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import "./App.css";
+import "./styles/app.css";
 import Header from "./components/Header";
 import MainPage from "./pages/MainPage";
 import AuthPage from "./pages/AuthPage";

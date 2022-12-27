@@ -1,7 +1,7 @@
 {
   "watchFolder": "src/",
   "outputFolder": "src/",
-  "sourceMap": true,
+  "mainFile": "styles/app.less",
   "runOnce": false,
   "enableJs": true
 }

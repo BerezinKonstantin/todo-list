@@ -5,7 +5,7 @@ const Header = ({ todos, user, handlerSignOut }) => {
     <header className="header">
       <h1>To Do List</h1>
       {user && (
-        <button className="header__button" onClick={handlerSignOut}>
+        <button className="button header__button" onClick={handlerSignOut}>
           Выйти
         </button>
       )}
